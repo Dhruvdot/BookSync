@@ -91,7 +91,7 @@
   <section class="chatbot-container">
     <h2>💬 Chat with BookSync</h2>
     <div class="chat-window">
-      The chat will appear shortly...
+      The chat widget will load in the corner shortly...
     </div>
   </section>
 
@@ -102,16 +102,16 @@
   <!-- Watson Assistant Web Chat Integration -->
   <script>
     window.watsonAssistantChatOptions = {
-      integrationID: "f3eca9e5-d5ee-4566-8935-c6eb76c6e573", // The ID of this integration.
-      region: "au-syd", // The region your integration is hosted in.
-      serviceInstanceID: "878e033b-5c3c-48e6-993a-59a3faada535", // The ID of your service instance.
+      integrationID: "b4a4c887-7001-4738-8622-244715f466e1", // Your updated integration ID
+      region: "au-syd", // The region your integration is hosted in
+      serviceInstanceID: "878e033b-5c3c-48e6-993a-59a3faada535", // Your service instance ID
       onLoad: async (instance) => { await instance.render(); }
     };
-    setTimeout(function() {
-      const t = document.createElement('script');
-      t.src = "https://web-chat.global.assistant.watson.appdomain.cloud/versions/" +
-              (window.watsonAssistantChatOptions.clientVersion || 'latest') +
-              "/WatsonAssistantChatEntry.js";
+    setTimeout(function(){
+      const t=document.createElement('script');
+      t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" +
+            (window.watsonAssistantChatOptions.clientVersion || 'latest') +
+            "/WatsonAssistantChatEntry.js";
       document.head.appendChild(t);
     });
   </script>
