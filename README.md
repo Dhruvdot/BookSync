@@ -10,9 +10,9 @@ BookSync is a smart, user-friendly book recommendation chatbot that helps you di
 ## ✨ Features
 
 - 💬 **Chatbot Assistant** powered by IBM Watson
-- 📖 **Book Recommendations** by genre, author, and format
+- 📖 **Book Recommendations** by genre and your mood
 - 🧠 **Short Summaries** of popular and classic titles
-- 📅 Discover **newly released** or **classic** books
+- 📅 Discover plethora of books
 - 🎯 Personalized suggestions for your next read
 
 ---
@@ -32,7 +32,7 @@ BookSync is a smart, user-friendly book recommendation chatbot that helps you di
 3. Use the chatbot in the bottom-right corner to:
    - Get book recommendations
    - Ask for summaries
-   - Discover by genre, author, or format
+   - Discover by genre or mood
    - Explore new or classic books
 
 ---
