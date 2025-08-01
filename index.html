@@ -5,48 +5,142 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BookSync – Your Smart Book Companion</title>
   <style>
+    :root {
+      --bg-color: #f5f6fa;
+      --text-color: #333;
+      --card-bg: #fff;
+      --feature-bg: #f0f0f0;
+      --header-bg: #4b6584;
+      --footer-bg: #4b6584;
+    }
+
+    body.dark {
+      --bg-color: #1e1e2f;
+      --text-color: #f1f1f1;
+      --card-bg: #2c2c3e;
+      --feature-bg: #333;
+      --header-bg: #111;
+      --footer-bg: #111;
+    }
+
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f5f6fa;
-      color: #333;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
+
     header {
-      background-color: #4b6584;
+      background-color: var(--header-bg);
       color: white;
       padding: 2rem;
       text-align: center;
+      position: relative;
     }
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
+
+    .toggle-switch {
+      position: absolute;
+      top: 20px;
+      right: 20px;
     }
-    header p {
-      font-size: 1.2rem;
-      margin-top: 0.5rem;
+
+    .toggle-switch input {
+      display: none;
     }
+
+    .slider {
+      position: relative;
+      width: 50px;
+      height: 24px;
+      background-color: #ccc;
+      border-radius: 34px;
+      cursor: pointer;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      height: 20px;
+      width: 20px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      border-radius: 50%;
+      transition: .4s;
+    }
+
+    input:checked + .slider::before {
+      transform: translateX(26px);
+    }
+
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+
     .features {
       padding: 2rem;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-around;
-      background-color: #ffffff;
+      background-color: var(--card-bg);
     }
+
     .feature {
       flex: 1 1 300px;
       margin: 1rem;
       padding: 1.5rem;
-      background-color: #f0f0f0;
+      background-color: var(--feature-bg);
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
-    .feature h3 {
-      margin-top: 0;
+
+    .book-gallery {
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      background-color: var(--card-bg);
+      position: relative;
     }
+
+    .book-card {
+      background-color: var(--card-bg);
+      padding: 1rem;
+      text-align: center;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+
+    .book-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .book-card img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .book-title {
+      margin-top: 0.5rem;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .book-author {
+      font-size: 0.9rem;
+      color: gray;
+    }
+
     .chatbot-container {
       padding: 2rem;
       text-align: center;
     }
+
     .chat-window {
       width: 100%;
       max-width: 600px;
@@ -55,79 +149,97 @@
       border: 2px dashed #bbb;
       border-radius: 10px;
       padding: 1rem;
-      background: #fff;
-      color: #666;
-    }
-
-    /* --- Book Gallery Styles --- */
-    .book-gallery {
-      padding: 2rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      background-color: #ffffff;
-    }
-    .book-card {
-      background-color: #fff;
-      padding: 1rem;
-      text-align: center;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .book-card img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .book-title {
-      margin-top: 0.5rem;
-      font-weight: bold;
-      font-size: 1.1rem;
-    }
-    .book-author {
-      font-size: 0.9rem;
-      color: #666;
+      background: var(--card-bg);
+      color: var(--text-color);
     }
 
     footer {
       text-align: center;
       padding: 1rem;
-      background-color: #4b6584;
+      background-color: var(--footer-bg);
       color: white;
+    }
+
+    /* Modal Styles */
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      display: none;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      color: var(--text-color);
+      padding: 2rem;
+      border-radius: 10px;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .blur {
+      filter: blur(5px);
+      pointer-events: none;
+    }
+
+    .book-brief {
+      position: absolute;
+      background-color: var(--card-bg);
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      width: 200px;
+      display: none;
+      z-index: 1;
     }
   </style>
 </head>
-<body>
-
+<body class="dark">
   <header>
     <h1>BookSync</h1>
     <p>Your smart assistant for book recommendations and summaries</p>
+    <label class="toggle-switch">
+      <input type="checkbox" id="theme-toggle">
+      <span class="slider"></span>
+    </label>
   </header>
 
-  <section class="features">
-    <div class="feature">
-      <h3>📚 Discover Books</h3>
-      <p>Get suggestions across genres – mystery, romance, fantasy, and more.</p>
-    </div>
-    <div class="feature">
-      <h3>🧠 Smart Summaries</h3>
-      <p>Short, helpful summaries for both new releases and classic titles.</p>
-    </div>
-    <div class="feature">
-      <h3>🎯 Personalized Picks</h3>
-      <p>Tell us what you like, and we’ll sync you with your next great read.</p>
-    </div>
-  </section>
+  <main id="main-content">
+    <section class="features">
+      <div class="feature">
+        <h3>📚 Discover Books</h3>
+        <p>Get suggestions across genres – mystery, romance, fantasy, and more.</p>
+      </div>
+      <div class="feature">
+        <h3>🧠 Smart Summaries</h3>
+        <p>Short, helpful summaries for both new releases and classic titles.</p>
+      </div>
+      <div class="feature">
+        <h3>🎯 Personalized Picks</h3>
+        <p>Tell us what you like, and we’ll sync you with your next great read.</p>
+      </div>
+    </section>
 
-  <!-- BOOK GALLERY SECTION -->
-  <section class="book-gallery">
-   <div class="book-card">
-  <img src="https://m.media-amazon.com/images/I/81YW99XIpJL._UF1000,1000_QL80_.jpg" alt="The Girl with the Dragon Tattoo">
-  <div class="book-title">The Girl with the Dragon Tattoo</div>
-  <div class="book-author">Stieg Larsson</div>
-</div>
-<div class="book-card">
+    <section class="book-gallery" id="bookGallery">
+      <!-- Book Cards already present here (yours will stay as-is) -->
+      <!-- We'll use JS to attach click listeners with summaries -->
+      <div class="book-card">
+        <img src="https://m.media-amazon.com/images/I/81YW99XIpJL._UF1000,1000_QL80_.jpg" alt="The Girl with the Dragon Tattoo">
+        <div class="book-title">The Girl with the Dragon Tattoo</div>
+        <div class="book-author">Stieg Larsson</div>
+      </div>
+      <!-- rest of the book cards -->
+
+	<div class="book-card">
   <img src="https://img1.od-cdn.com/ImageType-400/0111-1/%7B864604E2-0146-46EF-A96D-D9977DC15263%7DIMG400.JPG" alt="Gone Girl">
   <div class="book-title">Gone Girl</div>
   <div class="book-author">Gillian Flynn</div>
@@ -298,37 +410,115 @@
   <div class="book-author">Graeme Simsion</div>
 </div>
 
-  </section>
+    </section>
 
-  <section class="chatbot-container">
-    <h2>💬 Chat with BookSync</h2>
-    <div class="chat-window">
-      The chat widget will load in the corner shortly...
-    </div>
-  </section>
+    <section class="chatbot-container">
+      <h2>💬 Chat with BookSync</h2>
+      <div class="chat-window">
+        The chat widget will load in the corner shortly...
+      </div>
+    </section>
+  </main>
 
   <footer>
     &copy; 2025 BookSync. All rights reserved.
   </footer>
 
-  <!-- Watson Assistant Web Chat Integration -->
+  <!-- Modal for Book Summary -->
+  <div class="modal" id="modal">
+    <div class="modal-content" id="modalContent">
+      <p id="bookSummary"></p>
+      <button onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
   <script>
-    window.watsonAssistantChatOptions = {
-      integrationID: "b4a4c887-7001-4738-8622-244715f466e1",
-      region: "au-syd",
-      serviceInstanceID: "878e033b-5c3c-48e6-993a-59a3faada535",
-      onLoad: async (instance) => { await instance.render(); }
-    };
-    setTimeout(function(){
-      const t=document.createElement('script');
-      t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" +
-            (window.watsonAssistantChatOptions.clientVersion || 'latest') +
-            "/WatsonAssistantChatEntry.js";
-      document.head.appendChild(t);
+    // Toggle Theme
+    document.getElementById('theme-toggle').addEventListener('change', function() {
+      document.body.classList.toggle('dark');
     });
-  </script>
 
-</body>
+    // Book summaries
+    const summaries = {
+      <div class="book-brief" id="bookBrief"></div>
+    </script>
+
+    <script>
+      // Book summaries
+
+const summaries = {
+  "The Girl with the Dragon Tattoo": "A journalist and a hacker team up to uncover decades-old secrets and corruption within a wealthy family.",
+  "Gone Girl": "A husband's world unravels when his wife goes missing, revealing secrets and manipulations from both sides.",
+  "The Silent Patient": "A therapist investigates why a woman stopped speaking after murdering her husband in cold blood.",
+  "It Ends With Us": "A young woman’s journey of love, resilience, and difficult choices in an abusive relationship.",
+  "The Love Hypothesis": "A fake relationship between scientists leads to unexpected romance and personal discoveries.",
+  "Me Before You": "A caregiver transforms a paralyzed man’s outlook on life, sparking love and difficult decisions.",
+  "Mistborn": "A street thief with magical powers joins a rebellion to overthrow an immortal tyrant.",
+  "The Name of the Wind": "A legendary figure recounts his journey from orphaned boy to the world’s most notorious wizard.",
+  "A Court of Thorns and Roses": "A mortal woman is swept into a magical world and discovers love and war among fae.",
+  "The Haunting of Hill House": "A group explores a haunted mansion, uncovering eerie secrets and psychological horror.",
+  "Mexican Gothic": "A woman investigates her cousin’s creepy mansion filled with mold, madness, and family secrets.",
+  "The Shining": "A family isolated in a haunted hotel descends into madness and supernatural terror.",
+  "Becoming": "Michelle Obama reflects on her journey from Chicago girl to First Lady of the United States.",
+  "Steve Jobs": "A deep dive into the complex life and revolutionary vision of Apple’s co-founder.",
+  "Educated": "A woman escapes her survivalist family through education, finding her voice and identity.",
+  "Atomic Habits": "Simple strategies for building good habits and breaking bad ones to transform your life.",
+  "The Power of Now": "A guide to spiritual awakening through living fully in the present moment.",
+  "Can’t Hurt Me": "David Goggins shares how he turned pain into power through mental toughness and self-discipline."
+};
+
+      const bookGallery = document.getElementById('bookGallery');
+      const bookBrief = document.getElementById('bookBrief');
+
+      // Attach mouseover and mouseout listeners
+      document.querySelectorAll('.book-card').forEach(card => {
+        card.addEventListener('mouseover', () => {
+          const title = card.querySelector('.book-title').innerText;
+          const summary = summaries[title] || "Summary not available for this book.";
+          bookBrief.innerText = summary;
+          bookBrief.style.display = 'block';
+          const cardRect = card.getBoundingClientRect();
+          const galleryRect = bookGallery.getBoundingClientRect();
+          bookBrief.style.top = `${cardRect.top - galleryRect.top + cardRect.height / 2 - bookBrief.offsetHeight / 2}px`;
+          bookBrief.style.left = `${cardRect.left - galleryRect.left + cardRect.width}px`;
+        });
+        card.addEventListener('mouseout', () => {
+          bookBrief.style.display = 'none';
+        });
+      });
+
+      // Attach click listeners
+      document.querySelectorAll('.book-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const title = card.querySelector('.book-title').innerText;
+          const summary = summaries[title] || "Summary not available for this book.";
+          document.getElementById('bookSummary').innerText = summary;
+          document.getElementById('modal').classList.add('show');
+          document.getElementById('main-content').classList.add('blur');
+        });
+      });
+
+      function closeModal() {
+        document.getElementById('modal').classList.remove('show');
+        document.getElementById('main-content').classList.remove('blur');
+      }
+    </script>
+
+    <!-- Watson Assistant Web Chat Integration -->
+    <script>
+      window.watsonAssistantChatOptions = {
+        integrationID: "b4a4c887-7001-4738-8622-244715f466e1",
+        region: "au-syd",
+        serviceInstanceID: "878e033b-5c3c-48e6-993a-59a3faada535",
+        onLoad: async (instance) => { await instance.render(); }
+      };
+      setTimeout(function(){
+        const t=document.createElement('script');
+        t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" +
+              (window.watsonAssistantChatOptions.clientVersion || 'latest') +
+              "/WatsonAssistantChatEntry.js";
+        document.head.appendChild(t);
+      });
+    </script>
+  </body>
 </html>
-is this right ?
-
