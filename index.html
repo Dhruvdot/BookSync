@@ -37,7 +37,18 @@
       padding: 2rem;
       text-align: center;
       position: relative;
+      display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
     }
+
+	header img.logo {
+width: 60px;
+height: 60px;
+border-radius: 50%;
+object-fit: cover;
+}
 
     .toggle-switch {
       position: absolute;
@@ -204,16 +215,16 @@
   </style>
 </head>
 <body class="dark">
-  <header>
-    <h1>BookSync</h1>
-    <p>Your smart assistant for book recommendations and summaries</p>
-    <label class="toggle-switch">
-      <input type="checkbox" id="theme-toggle">
-      <span class="slider"></span>
-    </label>
-  </header>
-
-  <main id="main-content">
+<header>
+<img class="logo" src="https://videos.openai.com/vg-assets/assets%2Ftask_01k1dakwvdf3d87pxmmthq5g61%2F1753867774_img_1.webp?st=2025-08-01T13%3A26%3A07Z&se=2025-08-07T14%3A26%3A07Z&sks=b&skt=2025-08-01T13%3A26%3A07Z&ske=2025-08-07T14%3A26%3A07Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=aa5ddad1-c91a-4f0a-9aca-e20682cc8969&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=smbpDzoW5KIh7iY9wAtkoI6VGb3RVjVssaBePAa51Oo%3D&az=oaivgprodscus" alt="Logo">
+<h1>BookSync</h1>
+<p>Your smart assistant for book recommendations and summaries</p>
+<label class="toggle-switch">
+<input type="checkbox" id="theme-toggle">
+<span class="slider"></span>
+</label>
+</header>
+<main id="main-content">
     <section class="features">
       <div class="feature">
         <h3>📚 Discover Books</h3>
